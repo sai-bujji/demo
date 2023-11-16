@@ -1,10 +1,14 @@
 package com.demo.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -16,23 +20,29 @@ public class Employee {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "employee_id")
 	private Integer employeeId;
+	
 	@NotBlank
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
+	
 	@NotBlank
 	@Column(name = "last_name", nullable = false)
 	private String lastName;
+	
 	@Email
 	@NotBlank
 	@Column(name = "email_address", nullable = false)
 	private String email;
-	@NotBlank
-	@Column(name = "phone_number", nullable = false)
-    private String phoneNumbers;
+	
+	@OneToMany(mappedBy="employee", cascade = CascadeType.ALL)
+	private List<EmployeePhoneNumbers> employeePhoneNumbers; 
+	
 	@NotBlank
 	@Column(name = "date_of_joining", nullable = false)
 	private String doj;
+	
 	@NotNull
 	@Column(name = "salary", nullable = false)
 	private double salary;
@@ -69,12 +79,13 @@ public class Employee {
 		this.email = email;
 	}
 
-	public String getPhoneNumbers() {
-		return phoneNumbers;
+
+	public List<EmployeePhoneNumbers> getEmployeePhoneNumbers() {
+		return employeePhoneNumbers;
 	}
 
-	public void setPhoneNumbers(String phoneNumbers) {
-		this.phoneNumbers = phoneNumbers;
+	public void setEmployeePhoneNumbers(List<EmployeePhoneNumbers> employeePhoneNumbers) {
+		this.employeePhoneNumbers = employeePhoneNumbers;
 	}
 
 	public String getDoj() {
